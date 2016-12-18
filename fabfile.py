@@ -2,6 +2,7 @@ from __future__ import with_statement
 from fabric.api import env, local, run, sudo, cd, hosts, get
 from fabric.context_managers import prefix
 import datetime
+import settings
 
 env.use_ssh_config = False
 
@@ -27,3 +28,11 @@ def deploy():
     with cd(code_dir):
         sudo("git pull", user="nginx", pty=False)
         run('sudo systemctl restart openoversight')
+
+def backup():
+    if env.host=='openoversight.lucyparsonslabs.com':
+        code_dir='/home/nginx/OpenOversight_backup'
+    else:
+        code_dir='/home/nginx/OpenOversight_backup'
+    with cd(code_dir):
+        run('pg_dump SQLALCHEMY_DATABASE_URI -f > backup${%Y%M%D}.sql')

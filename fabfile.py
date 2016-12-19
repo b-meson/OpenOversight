@@ -2,8 +2,6 @@ from __future__ import with_statement
 from fabric.api import env, local, run, sudo, cd, hosts, get
 from fabric.context_managers import prefix
 import datetime
-import settings
-
 env.use_ssh_config = False
 
 # Hosts
@@ -35,4 +33,4 @@ def backup():
     else:
         code_dir='/home/nginx/OpenOversight_backup'
     with cd(code_dir):
-        run('pg_dump SQLALCHEMY_DATABASE_URI -f > backup${%Y%M%D}.sql')
+       run('pg_dump postgres://username:password@ec2-00-00-100-100.eu-west-1.compute.amazonaws.com:5432/databasename -f backup.sql')
